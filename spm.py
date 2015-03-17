@@ -7,7 +7,7 @@ requeriments click and python-virtualenv
 
 @author: GERCOM
 """
-import re
+import re,os
 import click
 import json
 import urllib.request
@@ -23,11 +23,14 @@ data = json.load(json_data)
 #pprint(data)
 json_data.close()
 
-def install_app(path,ctr_type,app):
+def install_app(path,controller,app):
+    ctr_type = data['controller'][controller]['type']
+    os.system("mkdir /tmp/"+app)
+    os.system("gunzip data['cache']+application+'.zip -d /tmp/"+app)    
     if ctr_type == "nox":
         pass
     elif ctr_type == "pox":
-        pass
+        os.system("cp /tmp/"+app+"/"+app+"/* "+data['controller'][controller]['path']+"pox/ext/")
     elif ctr_type == "floodlight":
         pass
     
@@ -45,10 +48,9 @@ def install(controller,application):
     "downloading app"
     urllib.request.urlretrieve(data['repository']+'/'+data['controller'][controller]['type']+'/'+application+'.zip', data['cache']+application+'.zip')
     
-        
-    print (data['controller'][controller])
-    print(controller)
-    click.echo('Initialized the database')
+    install_app(data['controller'][controller]['path'],controller,application)    
+
+    click.echo('Instalação Completa!!!')
 
 @cli.command()
 @click.argument("controller")

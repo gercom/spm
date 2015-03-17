@@ -1,16 +1,16 @@
 {
-    "repository": "http://10.126.1.56/reposdn/",  
+    "repository": "http://reposdn.inovarci.com.br/jdownloads/",  
     "cache": "/var/lib/managerapp/",
     "controller":
     { 
          "ctr1": 
             {
-                 "path": "controlador1",
+                 "path": "controller1/",
                  "type": "nox"
             },
         "ctr2": 
             {
-                 "path": "controlador2",
+                 "path": "controller2/",
                  "type": "pox"
             }
     }

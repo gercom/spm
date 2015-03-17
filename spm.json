@@ -1,0 +1,17 @@
+{
+    "repository": "http://10.126.1.56/reposdn/",  
+    "cache": "/var/lib/managerapp/",
+    "controller":
+    { 
+         "ctr1": 
+            {
+                 "path": "controlador1",
+                 "type": "nox"
+            },
+        "ctr2": 
+            {
+                 "path": "controlador2",
+                 "type": "pox"
+            }
+    }
+}

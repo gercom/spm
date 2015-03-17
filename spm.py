@@ -40,30 +40,37 @@ def install_app(path,controller,app):
 def cli():
    pass
 
+####
 @cli.command()
 @click.argument("controller")
 @click.argument("application")
 def install(controller,application):        
     
-    "downloading app"
+    
     urllib.request.urlretrieve(data['repository']+'/'+data['controller'][controller]['type']+'/'+application+'.zip', data['cache']+application+'.zip')
     
     install_app(data['controller'][controller]['path'],controller,application)    
 
     click.echo('Instalação Completa!!!')
 
+####
 @cli.command()
 @click.argument("controller")
 @click.argument("application")
-def remove():
+def remove(controller,application):
     click.echo('Dropped the database')
 
+####
 @cli.command()
-def update():
-    click.echo('Dropped the database')
+@click.argument("controller")
+@click.argument("application")
+def update(controller,application):
+    install(controller,application)
 
+####
 @cli.command()
 def download():
+    "Download lista pacotes"
     lista = {}
     for c in CONTROLLERS:
         url = data['repository']
@@ -77,7 +84,7 @@ def download():
   
     click.echo('downloading...')
 
-
+####
 @cli.command()
 def list():
     json_data=json.load(open(FILE_METASDNLIST))
@@ -87,7 +94,6 @@ def list():
         print("Applications: "+ str(v))
      
     
-
 
 if __name__ == '__main__':
     cli()        

@@ -11,7 +11,7 @@ import re,os
 import click
 import json
 import urllib.request
-
+import fileinput
 
 FILE_CONF = "./spm.json"
 FILE_METASDNLIST = 'metasdn.list'
@@ -34,7 +34,27 @@ def install_app(path,controller,app):
     elif ctr_type == "pox":
         os.system("cp /tmp/"+app+"/*.py "+data['controller'][controller]['path']+"ext/")
     elif ctr_type == "floodlight":
-        pass
+        work_dir = data['controller'][controller]['path']                 
+        fp = work_dir+"src/main/resources/floodlightdefault.properties"
+        app_name = app.split("-")[0]        
+        new_module = "."+app_name.lower()+"."+app_name.capitalize()
+        
+        ##copy module
+        os.system("mkdir "+work_dir+"src/main/java/net/floodlightcontroller/"+app_name)
+        os.system("cp /tmp/"+app+"/*.java "+work_dir+"src/main/java/net/floodlightcontroller/"+app_name+"/")
+        
+        #add module            
+        new_line = "net.floodlightcontroller"+ new_module + ",\\"
+        print("net.floodlightcontroller.core.internal.FloodlightProvider,\\\n"+new_line)
+
+        for line in fileinput.input(fp, inplace=True):
+            print(line.replace("net.floodlightcontroller.core.internal.FloodlightProvider,\\", "net.floodlightcontroller.core.internal.FloodlightProvider,\\\n"+new_line), end='')
+        
+        
+        os.system("echo '\nnet.floodlightcontroller"+new_module+ "' >> " + work_dir+"src/main/resources/META-INF/services/net.floodlightcontroller.core.module.IFloodlightModule")
+        #src/main/resources/floodlightdefault.properties
+                
+
     
 
 

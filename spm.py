@@ -27,7 +27,6 @@ def install_app(path,controller,app):
     ctr_type = data['controller'][controller]['type']
     os.system("mkdir /tmp/"+app)
     os.system("rm -rf  /tmp/"+app+"/*")
-    print(data['cache']+app+'.zip') 
     os.system("unzip "+data['cache']+app+".zip -d /tmp/"+app+"/")    
     if ctr_type == "nox":
         pass
@@ -45,7 +44,6 @@ def install_app(path,controller,app):
         
         #add module            
         new_line = "net.floodlightcontroller"+ new_module + ",\\"
-        print("net.floodlightcontroller.core.internal.FloodlightProvider,\\\n"+new_line)
 
         for line in fileinput.input(fp, inplace=True):
             print(line.replace("net.floodlightcontroller.core.internal.FloodlightProvider,\\", "net.floodlightcontroller.core.internal.FloodlightProvider,\\\n"+new_line), end='')

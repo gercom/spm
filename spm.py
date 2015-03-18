@@ -26,11 +26,13 @@ json_data.close()
 def install_app(path,controller,app):
     ctr_type = data['controller'][controller]['type']
     os.system("mkdir /tmp/"+app)
-    os.system("gunzip data['cache']+application+'.zip -d /tmp/"+app)    
+    os.system("rm -rf  /tmp/"+app+"/*")
+    print(data['cache']+app+'.zip') 
+    os.system("unzip "+data['cache']+app+".zip -d /tmp/"+app+"/")    
     if ctr_type == "nox":
         pass
     elif ctr_type == "pox":
-        os.system("cp /tmp/"+app+"/"+app+"/* "+data['controller'][controller]['path']+"pox/ext/")
+        os.system("cp /tmp/"+app+"/*.py "+data['controller'][controller]['path']+"ext/")
     elif ctr_type == "floodlight":
         pass
     
@@ -46,7 +48,7 @@ def cli():
 @click.argument("application")
 def install(controller,application):        
     
-    
+    print(data['repository']+'/'+data['controller'][controller]['type']+'/'+application+'.zip', data['cache']+application+'.zip')
     urllib.request.urlretrieve(data['repository']+'/'+data['controller'][controller]['type']+'/'+application+'.zip', data['cache']+application+'.zip')
     
     install_app(data['controller'][controller]['path'],controller,application)    
@@ -75,7 +77,7 @@ def download():
     for c in CONTROLLERS:
         url = data['repository']
         webFile = urllib.request.urlopen(url+'/'+ c)
-        html = webFile.read()
+        html = str(webFile.read()).replace('.zip','') 
         m = re.findall(r'href=[\'"]?([^\'" >]+)', str(html))
         lista[c] = m[1:]
         
